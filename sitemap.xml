@@ -3,15 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/</loc>
+    <loc>http://destroy.systems/posts/</loc>
+    <lastmod>2019-10-19T14:38:08-03:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/</loc>
+    <loc>http://destroy.systems/about/</loc>
+    <lastmod>2019-10-19T08:40:53-03:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/</loc>
+    <loc>http://destroy.systems/</loc>
+    <lastmod>2019-10-19T14:38:08-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://destroy.systems/posts/hello_world/</loc>
+    <lastmod>2019-10-19T14:38:08-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://destroy.systems/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>http://destroy.systems/tags/</loc>
   </url>
   
 </urlset>
