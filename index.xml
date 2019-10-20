@@ -17,7 +17,9 @@
        <title>Posts</title>
        <link>http://destroy.systems/posts/</link>
        <pubDate>Sat, 19 Oct 2019 14:38:08 -0300</pubDate>
-       <author></author>
+       <author>
+         
+       </author>
        <guid>http://destroy.systems/posts/</guid>
        <description></description>
      </item>
@@ -26,7 +28,12 @@
        <title>Hello World</title>
        <link>http://destroy.systems/posts/hello_world/</link>
        <pubDate>Sat, 19 Oct 2019 14:38:08 -0300</pubDate>
-       <author>site@destroy.systems (Admin)</author>
+       <author>
+         
+           
+            (),
+         
+       </author>
        <guid>http://destroy.systems/posts/hello_world/</guid>
        <description>&lt;p&gt;Hello humans!&lt;/p&gt;
 

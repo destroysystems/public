@@ -1,0 +1,41 @@
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+ <channel>
+   <title>destroy.systems</title>
+   <link>http://destroy.systems/authors/admin/</link>
+   <description>Recent content on destroy.systems</description>
+   <generator>Hugo -- gohugo.io</generator>
+   <language>en-us</language>
+   <managingEditor>site@destroy.systems</managingEditor>
+   <webMaster>site@destroy.systems</webMaster>
+   <lastBuildDate>Sat, 19 Oct 2019 14:38:08 -0300</lastBuildDate>
+   
+       <atom:link href="http://destroy.systems/authors/admin/index.xml" rel="self" type="application/rss+xml" />
+   
+   
+   
+     
+   
+     
+       <item>
+         <title>Hello World</title>
+         <link>http://destroy.systems/posts/hello_world/</link>
+         <pubDate>Sat, 19 Oct 2019 14:38:08 -0300</pubDate>
+         <author>
+           
+             
+              (),
+           
+         </author>
+         <guid>http://destroy.systems/posts/hello_world/</guid>
+         <description>&lt;p&gt;Hello humans!&lt;/p&gt;
+
+&lt;p&gt;This post will stay here until we have some actual content.&lt;/p&gt;
+
+&lt;p&gt;Thanks for stepping by!&lt;/p&gt;
+</description>
+       </item>
+     
+   
+ </channel>
+</rss>
