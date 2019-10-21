@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
@@ -18,6 +18,16 @@
   </url>
   
   <url>
+    <loc>http://destroy.systems/authors/henrique/</loc>
+    <lastmod>2019-10-19T14:38:08-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://destroy.systems/authors/mauricio/</loc>
+    <lastmod>2019-10-19T14:38:08-03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://destroy.systems/authors/</loc>
     <lastmod>2019-10-19T14:38:08-03:00</lastmod>
   </url>
@@ -30,14 +40,6 @@
   <url>
     <loc>http://destroy.systems/posts/hello_world/</loc>
     <lastmod>2019-10-19T14:38:08-03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://destroy.systems/authors/henrique/</loc>
-  </url>
-  
-  <url>
-    <loc>http://destroy.systems/authors/mauricio/</loc>
   </url>
   
   <url>

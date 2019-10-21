@@ -8,6 +8,7 @@
    <language>en-us</language>
    <managingEditor>site@destroy.systems</managingEditor>
    <webMaster>site@destroy.systems</webMaster>
+   <lastBuildDate>Sat, 19 Oct 2019 14:38:08 -0300</lastBuildDate>
    
        <atom:link href="http://destroy.systems/authors/henrique/index.xml" rel="self" type="application/rss+xml" />
    
@@ -15,6 +16,31 @@
    
      
    
+     
+       <item>
+         <title>Hello World</title>
+         <link>http://destroy.systems/posts/hello_world/</link>
+         <pubDate>Sat, 19 Oct 2019 14:38:08 -0300</pubDate>
+         <author>
+           
+             
+              (),
+           
+             
+             mauricio@destroy.systems (Mauricio Dias),
+           
+             
+             henrique@destroy.systems (Henrique Sangalli),
+           
+         </author>
+         <guid>http://destroy.systems/posts/hello_world/</guid>
+         <description>&lt;p&gt;Hello humans!&lt;/p&gt;
+
+&lt;p&gt;This post will stay here until we have some actual content.&lt;/p&gt;
+
+&lt;p&gt;Thanks for stepping by!&lt;/p&gt;
+</description>
+       </item>
      
    
  </channel>
