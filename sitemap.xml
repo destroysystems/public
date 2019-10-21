@@ -13,11 +13,6 @@
   </url>
   
   <url>
-    <loc>http://destroy.systems/authors/admin/</loc>
-    <lastmod>2019-10-19T14:38:08-03:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://destroy.systems/authors/henrique/</loc>
     <lastmod>2019-10-19T14:38:08-03:00</lastmod>
   </url>
@@ -40,6 +35,10 @@
   <url>
     <loc>http://destroy.systems/posts/hello_world/</loc>
     <lastmod>2019-10-19T14:38:08-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://destroy.systems/authors/admin/</loc>
   </url>
   
   <url>
