@@ -8,6 +8,7 @@
    <language>en-us</language>
    <managingEditor>admin@destroy.systems</managingEditor>
    <webMaster>admin@destroy.systems</webMaster>
+   <lastBuildDate>Mon, 28 Oct 2019 12:50:52 -0300</lastBuildDate>
    
        <atom:link href="http://destroy.systems/tags/index.xml" rel="self" type="application/rss+xml" />
    
@@ -15,7 +16,7 @@
      <item>
        <title>Posts</title>
        <link>http://destroy.systems/posts/</link>
-       <pubDate>Sat, 19 Oct 2019 14:38:08 -0300</pubDate>
+       <pubDate>Mon, 28 Oct 2019 12:50:52 -0300</pubDate>
        <author>
          
        </author>
@@ -24,18 +25,209 @@
      </item>
    
      <item>
-       <title>Hello World</title>
-       <link>http://destroy.systems/posts/hello_world/</link>
-       <pubDate>Sat, 19 Oct 2019 14:38:08 -0300</pubDate>
+       <title>Dynamic Email Routing With Mailgun and Python</title>
+       <link>http://destroy.systems/posts/dynamic-email-routing-with-mailgun-and-python/</link>
+       <pubDate>Mon, 28 Oct 2019 12:50:52 -0300</pubDate>
        <author>
          
+           
+           mauricio@destroy.systems (Mauricio Dias),
+         
        </author>
-       <guid>http://destroy.systems/posts/hello_world/</guid>
-       <description>&lt;p&gt;Hello humans!&lt;/p&gt;
+       <guid>http://destroy.systems/posts/dynamic-email-routing-with-mailgun-and-python/</guid>
+       <description>
 
-&lt;p&gt;This post will stay here until we have some actual content.&lt;/p&gt;
+&lt;h1 id=&#34;first-things-first&#34;&gt;First things first&lt;/h1&gt;
 
-&lt;p&gt;Thanks for stepping by!&lt;/p&gt;
+&lt;p&gt;This is a three part article. The index below will be updated with the respective links as soon as the upcoming parts are completed an published.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;.&#34;&gt;Creating the Base Function and Receiving POSTs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Automated Hosting of the Cloud Function&lt;/li&gt;
+&lt;li&gt;Routing Received Emails&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&#34;what-do-we-want-to-achieve&#34;&gt;What do we want to achieve?&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://destroy.systems/&#34;&gt;destroy.systems&lt;/a&gt; is not a huge company. It&amp;rsquo;s not even a company. Actually, it&amp;rsquo;s just &lt;a href=&#34;http://destroy.systems/authors&#34;&gt;some folks&lt;/a&gt; who want to write about technical stuff and share interesting experiments. Not being a huge company also means that we don&amp;rsquo;t have lots of resources to spare, we bought a domain and that&amp;rsquo;s already a lot, considering that it won&amp;rsquo;t generate any revenue. Having the domain, we would love to have some custom emails but, for sure, on the cheap side. We would like to have addresses for services as well (github@destroy.systems, circleci@destroy.systems, for example) and have this automatically routed to somewhere else.&lt;/p&gt;
+
+&lt;p&gt;Then you&amp;rsquo;ll say: &lt;em&gt;you can actually do that, there&amp;rsquo;s this fancy tool called &lt;a href=&#34;https://www.mailgun.com&#34;&gt;Mailgun&lt;/a&gt; that probably achieves what you folks want.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;True. We use it, and it&amp;rsquo;s awesome. But stay with me for a second.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s say that my email is personalemail@gmail.com, to which we can &lt;a href=&#34;https://thenextweb.com/google/2017/08/17/how-the-plus-sign-can-save-your-gmail-inbox-from-becoming-a-pit-of-doom/&#34;&gt;add some extra information&lt;/a&gt; in the address, by adding &lt;em&gt;+something&lt;/em&gt; after the username. So, if we wanted to track our emails from Github, for example, we can subscribe to github with personalemail+github@gmail.com, and with that we can filter our emails by tracking those that were sent to that address, instead of my default one.&lt;/p&gt;
+
+&lt;p&gt;This is such a great feature that Gmail offers. Now imagine if I wanted to do something similar &lt;em&gt;with my own domain&lt;/em&gt;. Or, even better, create addresses &lt;strong&gt;on the fly&lt;/strong&gt;. I&amp;rsquo;d love to have an address nameofservice@destroy.systems, and then redirect them to personalemail+nameofservice@gmail.com. This is easily achievable by creating new rules on mailgun, the problem is that we would need to create a new rule for every new service. And we couldn&amp;rsquo;t even have a generic case, as the receiver&amp;rsquo;s address cannot be parametrized, everything would have to go to the same address. We need to use something else.&lt;/p&gt;
+
+&lt;h1 id=&#34;what-are-the-tools-available&#34;&gt;What are the tools available?&lt;/h1&gt;
+
+&lt;p&gt;Mailgun has an API. By using this and some scripting we can achieve what we want. Then, if we host this script somewhere, we can have it permanently accessible. Think about &lt;em&gt;cloud&lt;/em&gt;, &lt;em&gt;serverless&lt;/em&gt; and all of these fancy words. We&amp;rsquo;ll talk about that in part 2.&lt;/p&gt;
+
+&lt;p&gt;The idea is to use Mailgun to capture all of the emails, forward it to a service that we created and then, within this service, we can modify the email and, with Mailgun API, send it to our personal email account, adding the required tags (or that &lt;em&gt;+something&lt;/em&gt;) that will allow us to filter what we want:&lt;/p&gt;
+
+&lt;div class=&#34;embed imgur-image&#34;&gt;
+&lt;blockquote class=&#34;imgur-embed-pub&#34; lang=&#34;en&#34; data-id=&#34;a/9lF7nGN&#34;&gt;
+&lt;a href=&#34;//imgur.com/9lF7nGN&#34;&gt;&lt;/a&gt;
+&lt;/blockquote&gt;
+&lt;script async src=&#34;//s.imgur.com/min/embed.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+
+
+&lt;h1 id=&#34;setting-up-mailgun&#34;&gt;Setting up Mailgun&lt;/h1&gt;
+
+&lt;p&gt;First, we need to configure a route to catch all emails and forward it to an address (use a dummy address for now, we&amp;rsquo;ll have an actual one soon):&lt;/p&gt;
+
+&lt;div class=&#34;embed imgur-image&#34;&gt;
+&lt;blockquote class=&#34;imgur-embed-pub&#34; lang=&#34;en&#34; data-id=&#34;a/0xVXjlb&#34;&gt;
+&lt;a href=&#34;//imgur.com/0xVXjlb&#34;&gt;&lt;/a&gt;
+&lt;/blockquote&gt;
+&lt;script async src=&#34;//s.imgur.com/min/embed.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;Then, set the priority number higher than all the other existing rules (it will be the last rule to be executed):&lt;/p&gt;
+
+&lt;div class=&#34;embed imgur-image&#34;&gt;
+&lt;blockquote class=&#34;imgur-embed-pub&#34; lang=&#34;en&#34; data-id=&#34;a/q5M1sk5&#34;&gt;
+&lt;a href=&#34;//imgur.com/q5M1sk5&#34;&gt;&lt;/a&gt;
+&lt;/blockquote&gt;
+&lt;script async src=&#34;//s.imgur.com/min/embed.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+
+
+&lt;h1 id=&#34;crack-the-code&#34;&gt;Crack the Code&lt;/h1&gt;
+
+&lt;h2 id=&#34;preparing-the-environment&#34;&gt;Preparing the environment&lt;/h2&gt;
+
+&lt;p&gt;Okay, we have the rules set. It&amp;rsquo;s coding time.&lt;/p&gt;
+
+&lt;p&gt;To keep things pretty, create a virtualenv and add our requirements:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ python3 -m venv .venv
+$ source .venv/bin/activate
+$ pip install flask
+$ pip freeze &amp;gt; requirements.txt&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;After doing that, we&amp;rsquo;ll have a &lt;code&gt;requirements.txt&lt;/code&gt; quite similar to the one below:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;Click==7.0
+Flask==1.1.1
+itsdangerous==1.1.0
+Jinja2==2.10.3
+MarkupSafe==1.1.1
+Werkzeug==0.16.0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;starting-the-basic-app-and-flask-wrapper&#34;&gt;Starting the basic app and Flask wrapper&lt;/h2&gt;
+
+&lt;p&gt;Having our virtualenv properly set, with the requirements installed and listed, let&amp;rsquo;s create a Flask wrapper for our function, to deal with HTTP requests. Creating this wrapper now is important to simulate how our app will behave when it&amp;rsquo;s hosted in the almighty cloud.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; flask &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Flask
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;app &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Flask(__name__)
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@app.route&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;, methods&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;GET&amp;#39;&lt;/span&gt;])
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;call&lt;/span&gt;():
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello World!&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If in one terminal we run our app&amp;hellip;:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ FLASK_APP&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;app.py flask run
+ * Serving Flask app &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app.py&amp;#34;&lt;/span&gt;
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Press CTRL+C to quit&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&amp;hellip; and in another we curl the address informed, we should see a nice Hello World message:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ curl http://127.0.0.1:5000/
+Hello World!&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;expand-and-separate-concerns&#34;&gt;Expand and separate concerns&lt;/h2&gt;
+
+&lt;p&gt;Cool, we&amp;rsquo;re dealing with HTTP requests. Let&amp;rsquo;s move on to the actual function. If you&amp;rsquo;re curious, take a look at the &lt;a href=&#34;https://documentation.mailgun.com/en/latest/api_reference.html&#34;&gt;Mailgun API&lt;/a&gt; to understand better what it&amp;rsquo;s capable of. Most of what we&amp;rsquo;ll use, if not all, is in &lt;a href=&#34;https://documentation.mailgun.com/en/latest/api-sending.html#sending&#34;&gt;here&lt;/a&gt;, I&amp;rsquo;ll move straight to it.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s create a new file, which I&amp;rsquo;ll call &lt;code&gt;process.py&lt;/code&gt;, to write our function. It will start simple as this:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;process&lt;/span&gt;():
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello World!&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And now, in our &lt;code&gt;app.py&lt;/code&gt;, instead of just returning a string, let&amp;rsquo;s import this function and call it:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:block;width:100%;background-color:#3c3d38&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; process &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; process
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; flask &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Flask
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;app &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Flask(__name__)
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@app.route&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;, methods&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;GET&amp;#39;&lt;/span&gt;])
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;7&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;call&lt;/span&gt;():
+&lt;span style=&#34;display:block;width:100%;background-color:#3c3d38&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;8&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; process()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If all went well, we&amp;rsquo;re still reading a &lt;code&gt;Hello World!&lt;/code&gt; message when we curl it. Cool.&lt;/p&gt;
+
+&lt;p&gt;To deal with the actual contents of our emails, we&amp;rsquo;ll need to use an &lt;a href=&#34;https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request&#34;&gt;object from Flask that allows us to deal with requests&lt;/a&gt;, called &lt;code&gt;request&lt;/code&gt;. So, our &lt;code&gt;app.py&lt;/code&gt; will look like this:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; process &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; process
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;
+&lt;span style=&#34;display:block;width:100%;background-color:#3c3d38&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; flask &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Flask, request
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;app &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Flask(__name__)
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@app.route&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;, methods&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;GET&amp;#39;&lt;/span&gt;])
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;7&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;call&lt;/span&gt;():
+&lt;span style=&#34;display:block;width:100%;background-color:#3c3d38&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;8&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; process(request)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And our &lt;code&gt;process&lt;/code&gt; function now has to receive it:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:block;width:100%;background-color:#3c3d38&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;process&lt;/span&gt;(request):
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello World!&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;serious-business&#34;&gt;Serious business (?)&lt;/h2&gt;
+
+&lt;p&gt;From this point on, we&amp;rsquo;ll need to receive data in a similar way to what we should receive from Mailgun. As our app isn&amp;rsquo;t reachable by Mailgun servers yet, we need to simulate this data somehow. I went the extra mile, ran some requests from Mailgun and, at this point, I believe that I can accurately simulate their requests with a &lt;code&gt;curl&lt;/code&gt; command, which you can see and copy from the gist below. If at any point I notice that it&amp;rsquo;s not accurate, I&amp;rsquo;ll update the gist. So, starting now, we&amp;rsquo;ll no longer just &lt;code&gt;curl http://127.0.0.1:5000&lt;/code&gt;, we&amp;rsquo;ll run the gist.&lt;/p&gt;
+
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/mauodias/a26d7dd0e313bb93cf5fa7d0c66afec9.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;To save the gist, you can copy it and paste to a file, or run the commands below:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ curl -o curl.sh -L https://git.io/JeuUh
+$ chmod +x curl.sh&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;drop-the-gets-get-the-posts&#34;&gt;Drop the GETs, get the POSTs&lt;/h2&gt;
+
+&lt;p&gt;All good, all great. But nothing changed in our browser, we still see the good ol&amp;rsquo; &lt;code&gt;Hello World!&lt;/code&gt;. Let&amp;rsquo;s do some stuff with the &lt;code&gt;request&lt;/code&gt; object. First, to prepare our function to receive data from Mailgun, we need to be able to receive &lt;code&gt;POST&lt;/code&gt;, and not only &lt;code&gt;GET&lt;/code&gt;. So, we make a small change in our &lt;code&gt;app.py&lt;/code&gt;, like below:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:block;width:100%;background-color:#3c3d38&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@app.route&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;, methods&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;GET&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;POST&amp;#39;&lt;/span&gt;])
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;7&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;call&lt;/span&gt;():
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;8&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; process(request)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We&amp;rsquo;re leaving the &lt;code&gt;GET&lt;/code&gt; only for testing purposes, as Mailgun sends only &lt;code&gt;POST&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request&#34;&gt;Here&lt;/a&gt; we can find the documentation for the &lt;code&gt;request&lt;/code&gt; object. For this application, all the information we need will be on &lt;code&gt;request.form&lt;/code&gt;, because Mailgun sends it as form data. To make it easier to handle the information, we can extract just the form data. (Flask relies on the &lt;a href=&#34;https://werkzeug.palletsprojects.com/en/0.16.x/&#34;&gt;Werkzeug WSGI web application library&lt;/a&gt;, so the output of &lt;code&gt;form&lt;/code&gt; is actually an &lt;a href=&#34;https://werkzeug.palletsprojects.com/en/0.16.x/datastructures/#werkzeug.datastructures.ImmutableMultiDict&#34;&gt;&lt;code&gt;ImmutableMultiDict&lt;/code&gt;&lt;/a&gt; object. We can use the &lt;code&gt;to_dict()&lt;/code&gt; method to convert it to a simple dictionary.) And, after that, we can start gathering the info that we&amp;rsquo;ll need. For now, we won&amp;rsquo;t use more than the actual message, subject and the sender and receiver email.&lt;/p&gt;
+
+&lt;p&gt;So, our &lt;code&gt;process.py&lt;/code&gt; file will look like this, extracting the info from the request and returning as a nicely formatted string:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;process&lt;/span&gt;(request):
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;    sender &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; str(data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Sender&amp;#39;&lt;/span&gt;])
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;    receiver &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; str(data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;To&amp;#39;&lt;/span&gt;])
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;    subject &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; str(data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Subject&amp;#39;&lt;/span&gt;])
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;    message &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; str(data[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;body-html&amp;#39;&lt;/span&gt;])
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;    response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;From: {}&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;To: {}&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Subject: {}&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Message: {}&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;format(sender, receiver, subject, message)
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;7&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; response&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, if we run our app and, in another terminal, we run the &lt;code&gt;curl.sh&lt;/code&gt; script from the gist, this is what we should see:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ ./curl.sh
+From:  bob@domain.com
+To:  Alice &amp;lt;alice@domain.com&amp;gt;
+Subject:  Re: Sample POST request
+Message:  &amp;lt;html&amp;gt;  &amp;lt;head&amp;gt;    &amp;lt;meta content&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1 id=&#34;wrapping-up-already&#34;&gt;Wrapping up (already?)&lt;/h1&gt;
+
+&lt;p&gt;It feels like a lot is missing, right? That&amp;rsquo;s because it is.&lt;/p&gt;
+
+&lt;p&gt;We&amp;rsquo;ve gone a long way already, and by now we&amp;rsquo;re ready to begin receiving requests from Mailgun. Unfortunately, our app isn&amp;rsquo;t publicly available yet, it only runs in our machines. So, in the next part, we&amp;rsquo;ll focus on it, our dynamic router will run in the cloud, and we&amp;rsquo;ll do it in a way that the deploy process is completely automated. If we ever need to change anything in the code of our app, we&amp;rsquo;ll be able to do it with a single commit.&lt;/p&gt;
 </description>
      </item>
    

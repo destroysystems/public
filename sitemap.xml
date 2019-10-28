@@ -4,7 +4,7 @@
   
   <url>
     <loc>http://destroy.systems/posts/</loc>
-    <lastmod>2019-10-19T14:38:08-03:00</lastmod>
+    <lastmod>2019-10-28T12:50:52-03:00</lastmod>
   </url>
   
   <url>
@@ -13,29 +13,52 @@
   </url>
   
   <url>
-    <loc>http://destroy.systems/</loc>
-    <lastmod>2019-10-19T14:38:08-03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://destroy.systems/posts/hello_world/</loc>
-    <lastmod>2019-10-19T14:38:08-03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://destroy.systems/authors/henrique/</loc>
-  </url>
-  
-  <url>
     <loc>http://destroy.systems/authors/mauricio/</loc>
+    <lastmod>2019-10-28T12:50:52-03:00</lastmod>
   </url>
   
   <url>
     <loc>http://destroy.systems/authors/</loc>
+    <lastmod>2019-10-28T12:50:52-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://destroy.systems/tags/automation/</loc>
+    <lastmod>2019-10-28T12:50:52-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://destroy.systems/tags/custom-domain/</loc>
+    <lastmod>2019-10-28T12:50:52-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://destroy.systems/</loc>
+    <lastmod>2019-10-28T12:50:52-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://destroy.systems/posts/dynamic-email-routing-with-mailgun-and-python/</loc>
+    <lastmod>2019-10-28T12:50:52-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://destroy.systems/tags/mailgun/</loc>
+    <lastmod>2019-10-28T12:50:52-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://destroy.systems/tags/smtp/</loc>
+    <lastmod>2019-10-28T12:50:52-03:00</lastmod>
   </url>
   
   <url>
     <loc>http://destroy.systems/tags/</loc>
+    <lastmod>2019-10-28T12:50:52-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://destroy.systems/authors/henrique/</loc>
   </url>
   
 </urlset>
